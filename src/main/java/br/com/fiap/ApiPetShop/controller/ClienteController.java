@@ -1,5 +1,6 @@
 package br.com.fiap.ApiPetShop.controller;
 import br.com.fiap.ApiPetShop.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public Cliente criarCliente(@RequestBody Cliente cliente) {
+    public Cliente criarCliente(@RequestBody @Valid Cliente cliente) {
         return clienteService.criarCliente(cliente);
     }
 
@@ -37,7 +38,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody Cliente clienteAtualizado) {
+    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id, @RequestBody @Valid Cliente clienteAtualizado) {
         return clienteService.atualizarCliente(id, clienteAtualizado)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
