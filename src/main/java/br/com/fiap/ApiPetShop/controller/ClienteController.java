@@ -2,6 +2,7 @@ package br.com.fiap.ApiPetShop.controller;
 import br.com.fiap.ApiPetShop.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +21,24 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    //@GetMapping
+    //public List<Cliente> listarClientes() {
+      //  return clienteService.listarClientes();
+    //}
+
     @GetMapping
-    public List<Cliente> listarClientes() {
-        return clienteService.listarClientes();
+    public ResponseEntity<Page<Cliente>> listarClientes(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Integer idadeMin,
+            @RequestParam(required = false) Integer idadeMax,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+
+        Page<Cliente> clientes = clienteService.listarClientesComFiltro(nome, email, idadeMin, idadeMax, page, size, sortBy, sortDir);
+        return ResponseEntity.ok(clientes);
     }
 
     @PostMapping
